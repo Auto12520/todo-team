@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<meta charset="UTF-8">
+<title>Task Report</title>
+
+<style>
+
+body{
+font-family:Arial;
+background:#f4f6fb;
+padding:40px;
+text-align:center;
+}
+
+table{
+margin:auto;
+border-collapse:collapse;
+width:80%;
+background:white;
+}
+
+th,td{
+border:1px solid #ddd;
+padding:10px;
+}
+
+th{
+background:#667eea;
+color:white;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>Task Report</h1>
+
+<table>
+
+<thead>
+
+<tr>
+<th>Name</th>
+<th>Team</th>
+<th>Task</th>
+<th>Status</th>
+</tr>
+
+</thead>
+
+<tbody id="reportTable"></tbody>
+
+</table>
+
+<script>
+
+let tasks = JSON.parse(localStorage.getItem("tasks")) || []
+
+let table=document.getElementById("reportTable")
+
+if(tasks.length==0){
+
+table.innerHTML="<tr><td colspan='4'>No data</td></tr>"
+
+}else{
+
+tasks.forEach(t=>{
+
+let row=
+
+`
+<tr>
+<td>${t.name}</td>
+<td>${t.team}</td>
+<td>${t.task}</td>
+<td>${t.done ? "Done" : "Pending"}</td>
+</tr>
+`
+
+table.innerHTML+=row
+
+})
+
+}
+
+</script>
+
+</body>
+
+</html>
