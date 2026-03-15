@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<meta charset="UTF-8">
+<title>Company Task System</title>
+
+<style>
+
+body{
+font-family:Arial;
+background:#f5f7fb;
+text-align:center;
+padding:40px;
+}
+
+button{
+padding:10px 20px;
+margin:10px;
+background:#667eea;
+border:none;
+color:white;
+border-radius:5px;
+cursor:pointer;
+}
+
+input,textarea{
+width:300px;
+padding:8px;
+margin:5px;
+}
+
+.card{
+background:white;
+padding:15px;
+margin:10px auto;
+width:350px;
+border-radius:8px;
+box-shadow:0 5px 10px rgba(0,0,0,0.1);
+}
+
+.done{
+color:green;
+font-weight:bold;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>Company Task System</h1>
+
+<div id="role">
+
+<h2>Select Role</h2>
+
+<button onclick="showEmployee()">Employee</button>
+
+<button onclick="showBoss()">Boss</button>
+
+</div>
+
+<div id="employee" style="display:none">
+
+<h2>Submit Task</h2>
+
+<input id="empName" placeholder="Your Name">
+
+<input id="empTeam" placeholder="Team">
+
+<textarea id="empTask" placeholder="Task description"></textarea>
+
+<br>
+
+<button onclick="submitTask()">Submit</button>
+
+</div>
+
+<div id="boss" style="display:none">
+
+<h2>Boss Dashboard</h2>
+
+<div id="taskList"></div>
+
+</div>
+
+<script>
+
+let tasks = JSON.parse(localStorage.getItem("tasks")) || []
+
+function showEmployee(){
+
+document.getElementById("role").style.display="none"
+document.getElementById("employee").style.display="block"
+
+}
+
+function showBoss(){
+
+document.getElementById("role").style.display="none"
+document.getElementById("boss").style.display="block"
+
+render()
+
+}
+
+function submitTask(){
+
+let name=document.getElementById("empName").value
+let team=document.getElementById("empTeam").value
+let task=document.getElementById("empTask").value
+
+let data={
+name:name,
+team:team,
+task:task,
+done:false
+}
+
+tasks.push(data)
+
+save()
+
+alert("Task submitted")
+
+}
+
+function render(){
+
+let list=document.getElementById("taskList")
+
+list.innerHTML=""
+
+tasks.forEach((t,i)=>{
+
+let div=document.createElement("div")
+
+div.className="card"
+
+div.innerHTML=
+
+"<b>"+t.name+"</b><br>"+
+"Team: "+t.team+"<br>"+
+"Task: "+t.task+"<br>"+
+"Status: "+(t.done?"<span class='done'>Done</span>":"Pending")+"<br>"+
+"<button onclick='markDone("+i+")'>Mark Done</button>"
+
+list.appendChild(div)
+
+})
+
+}
+
+function markDone(i){
+
+tasks[i].done=true
+
+save()
+
+render()
+
+}
+
+function save(){
+
+localStorage.setItem("tasks",JSON.stringify(tasks))
+
+}
+
+</script>
+
+</body>
+
+</html>
